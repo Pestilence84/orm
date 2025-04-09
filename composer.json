@@ -1,0 +1,20 @@
+{
+    "name": "root/www.buildingup365",
+    "description": "BUP2.0",
+    "type": "project",
+    "license": "shareware",
+    "autoload": {
+        "psr-4": {
+            "Base\\": "src/",
+            "Orm\\": "orm/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Attilio Monti"
+        }
+    ],
+    "require": {
+        "mongodb/mongodb": "*"
+    }
+}
