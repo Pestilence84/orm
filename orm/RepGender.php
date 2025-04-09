@@ -50,10 +50,10 @@
         }
         
         public function getIdGender() : int {
-            return $this->fields['id_gender'];
+            return (int) $this->fields['id_gender'];
         }
         public function getGender() : string|null {
-            return $this->fields['gender'];
+            return (string) $this->fields['gender'];
         }
         
         public function getConstants(){

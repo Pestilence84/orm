@@ -68,19 +68,19 @@
         }
         
         public function getIdProvince() : int {
-            return $this->fields['id_province'];
+            return (int) $this->fields['id_province'];
         }
         public function getProvinceCodeNum() : int|null {
-            return $this->fields['ProvinceCode_Num'];
+            return (int) $this->fields['ProvinceCode_Num'];
         }
         public function getRegionCodeNum() : int|null {
-            return $this->fields['RegionCode_Num'];
+            return (int) $this->fields['RegionCode_Num'];
         }
         public function getVehicleCityCode() : string|null {
-            return $this->fields['VehicleCityCode'];
+            return (string) $this->fields['VehicleCityCode'];
         }
         public function getName() : string {
-            return $this->fields['Name'];
+            return (string) $this->fields['Name'];
         }
         
         public function getConstants(){

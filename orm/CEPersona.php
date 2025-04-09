@@ -100,22 +100,22 @@
         }
         
         public function getIdPersona() : int {
-            return $this->fields['id_persona'];
+            return (int) $this->fields['id_persona'];
         }
         public function getNome() : string|null {
-            return $this->fields['nome'];
+            return (string) $this->fields['nome'];
         }
         public function getCognome() : string|null {
-            return $this->fields['cognome'];
+            return (string) $this->fields['cognome'];
         }
         public function getNascitaDate() : string|null {
-            return $this->fields['nascita_date'];
+            return (string) $this->fields['nascita_date'];
         }
         public function getIdCityBirthFk() : int|null {
-            return $this->fields['id_city_birth_fk'];
+            return (int) $this->fields['id_city_birth_fk'];
         }
         public function getIdGenderFk() : int|null {
-            return $this->fields['id_gender_fk'];
+            return (int) $this->fields['id_gender_fk'];
         }
         public function getCreationDate() : \DateTime {
             return $this->fields['creation_date'] == null ? new \DateTime : $this->fields['creation_date'];
@@ -124,10 +124,10 @@
             return $this->fields['mod_date'] == null ? new \DateTime : $this->fields['mod_date'];
         }
         public function getHidden() : int|null {
-            return $this->fields['hidden'];
+            return (int) $this->fields['hidden'];
         }
         public function getDeleted() : int|null {
-            return $this->fields['deleted'];
+            return (int) $this->fields['deleted'];
         }
         public function getCity(){
             $elem = new RepCity($this->fields['id_city_birth_fk']);

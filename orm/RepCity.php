@@ -334,151 +334,151 @@
         }
         
         public function getIdCity() : int {
-            return $this->fields['id_city'];
+            return (int) $this->fields['id_city'];
         }
         public function getIdCountryFk() : int|null {
-            return $this->fields['id_country_Fk'];
+            return (int) $this->fields['id_country_Fk'];
         }
         public function getIdCityISP() : int|null {
-            return $this->fields['IdCity_ISP'];
+            return (int) $this->fields['IdCity_ISP'];
         }
         public function getRegionCodeNum() : int|null {
-            return $this->fields['RegionCode_Num'];
+            return (int) $this->fields['RegionCode_Num'];
         }
         public function getMetroCityCodeNum() : int|null {
-            return $this->fields['MetroCityCode_Num'];
+            return (int) $this->fields['MetroCityCode_Num'];
         }
         public function getProvinceCodeNum() : int|null {
-            return $this->fields['ProvinceCode_Num'];
+            return (int) $this->fields['ProvinceCode_Num'];
         }
         public function getIdProvinceFk() : int|null {
-            return $this->fields['id_province_Fk'];
+            return (int) $this->fields['id_province_Fk'];
         }
         public function getIdRegionFk() : int|null {
-            return $this->fields['id_region_Fk'];
+            return (int) $this->fields['id_region_Fk'];
         }
         public function getIdGeographicalDivisionFk() : int|null {
-            return $this->fields['id_geographicalDivision_Fk'];
+            return (int) $this->fields['id_geographicalDivision_Fk'];
         }
         public function getCitySequence() : string|null {
-            return $this->fields['CitySequence'];
+            return (string) $this->fields['CitySequence'];
         }
         public function getCityCodeAlfa() : string|null {
-            return $this->fields['CityCode_Alfa'];
+            return (string) $this->fields['CityCode_Alfa'];
         }
         public function getNameIT() : string|null {
-            return $this->fields['Name_IT'];
+            return (string) $this->fields['Name_IT'];
         }
         public function getNameITAlt1() : string|null {
-            return $this->fields['Name_IT_alt1'];
+            return (string) $this->fields['Name_IT_alt1'];
         }
         public function getNameITAlt2() : string|null {
-            return $this->fields['Name_IT_alt2'];
+            return (string) $this->fields['Name_IT_alt2'];
         }
         public function getNameITAlt3() : string|null {
-            return $this->fields['Name_IT_alt3'];
+            return (string) $this->fields['Name_IT_alt3'];
         }
         public function getNameITAlt4() : string|null {
-            return $this->fields['Name_IT_alt4'];
+            return (string) $this->fields['Name_IT_alt4'];
         }
         public function getNameDE() : string|null {
-            return $this->fields['Name_DE'];
+            return (string) $this->fields['Name_DE'];
         }
         public function getFlagCitySize() : int|null {
-            return $this->fields['Flag_CitySize'];
+            return (int) $this->fields['Flag_CitySize'];
         }
         public function getFlagCityChief() : int|null {
-            return $this->fields['Flag_CityChief'];
+            return (int) $this->fields['Flag_CityChief'];
         }
         public function getVehicleCityCode() : string|null {
-            return $this->fields['VehicleCityCode'];
+            return (string) $this->fields['VehicleCityCode'];
         }
         public function getSisterCityCode() : string|null {
-            return $this->fields['SisterCityCode'];
+            return (string) $this->fields['SisterCityCode'];
         }
         public function getCityCodeNum() : int|null {
-            return $this->fields['CityCode_Num'];
+            return (int) $this->fields['CityCode_Num'];
         }
         public function getCityCodeNum110() : int|null {
-            return $this->fields['CityCode_Num110'];
+            return (int) $this->fields['CityCode_Num110'];
         }
         public function getCityCodeNum107() : int|null {
-            return $this->fields['CityCode_Num107'];
+            return (int) $this->fields['CityCode_Num107'];
         }
         public function getCityCodeNum103() : int|null {
-            return $this->fields['CityCode_Num103'];
+            return (int) $this->fields['CityCode_Num103'];
         }
         public function getCadastralCode() : string|null {
-            return $this->fields['CadastralCode'];
+            return (string) $this->fields['CadastralCode'];
         }
         public function getLegalPopulation() : int|null {
-            return $this->fields['LegalPopulation'];
+            return (int) $this->fields['LegalPopulation'];
         }
         public function getCodeNUTS12010() : string|null {
-            return $this->fields['CodeNUTS1_2010'];
+            return (string) $this->fields['CodeNUTS1_2010'];
         }
         public function getCodeNUTS22010() : string|null {
-            return $this->fields['CodeNUTS2_2010'];
+            return (string) $this->fields['CodeNUTS2_2010'];
         }
         public function getCodeNUTS32010() : string|null {
-            return $this->fields['CodeNUTS3_2010'];
+            return (string) $this->fields['CodeNUTS3_2010'];
         }
         public function getCodeNUTS12006() : string|null {
-            return $this->fields['CodeNUTS1_2006'];
+            return (string) $this->fields['CodeNUTS1_2006'];
         }
         public function getCodeNUTS22006() : string|null {
-            return $this->fields['CodeNUTS2_2006'];
+            return (string) $this->fields['CodeNUTS2_2006'];
         }
         public function getCodeNUTS32006() : string|null {
-            return $this->fields['CodeNUTS3_2006'];
+            return (string) $this->fields['CodeNUTS3_2006'];
         }
         public function getAreaKmq() : float|null {
-            return $this->fields['Area_Kmq'];
+            return (float) $this->fields['Area_Kmq'];
         }
         public function getAltitudeMin() : int|null {
-            return $this->fields['Altitude_Min'];
+            return (int) $this->fields['Altitude_Min'];
         }
         public function getAltitudeMax() : int|null {
-            return $this->fields['Altitude_Max'];
+            return (int) $this->fields['Altitude_Max'];
         }
         public function getAltitudeRange() : int|null {
-            return $this->fields['Altitude_Range'];
+            return (int) $this->fields['Altitude_Range'];
         }
         public function getAltitudeAvg() : float|null {
-            return $this->fields['Altitude_Avg'];
+            return (float) $this->fields['Altitude_Avg'];
         }
         public function getAltitudeMedian() : int|null {
-            return $this->fields['Altitude_Median'];
+            return (int) $this->fields['Altitude_Median'];
         }
         public function getAltitudeStdDev() : float|null {
-            return $this->fields['Altitude_StdDev'];
+            return (float) $this->fields['Altitude_StdDev'];
         }
         public function getIdElevationFk() : int|null {
-            return $this->fields['IdElevation_Fk'];
+            return (int) $this->fields['IdElevation_Fk'];
         }
         public function getCenterAltitude() : int|null {
-            return $this->fields['CenterAltitude'];
+            return (int) $this->fields['CenterAltitude'];
         }
         public function getCoastalCitySN() : int|null {
-            return $this->fields['CoastalCity_SN'];
+            return (int) $this->fields['CoastalCity_SN'];
         }
         public function getMountainCityFk() : string|null {
-            return $this->fields['MountainCity_Fk'];
+            return (string) $this->fields['MountainCity_Fk'];
         }
         public function getIdUrbanLevelFk() : int|null {
-            return $this->fields['IdUrbanLevel_Fk'];
+            return (int) $this->fields['IdUrbanLevel_Fk'];
         }
         public function getSeismicGrade() : string|null {
-            return $this->fields['SeismicGrade'];
+            return (string) $this->fields['SeismicGrade'];
         }
         public function getLatitude() : float|null {
-            return $this->fields['Latitude'];
+            return (float) $this->fields['Latitude'];
         }
         public function getLongitude() : float|null {
-            return $this->fields['Longitude'];
+            return (float) $this->fields['Longitude'];
         }
         public function getUpdatedRec() : int|null {
-            return $this->fields['UpdatedRec'];
+            return (int) $this->fields['UpdatedRec'];
         }
         public function getProvince(){
             $elem = new RepProvince($this->fields['id_province_Fk']);

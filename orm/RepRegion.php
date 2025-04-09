@@ -62,16 +62,16 @@
         }
         
         public function getIdRegion() : int {
-            return $this->fields['id_region'];
+            return (int) $this->fields['id_region'];
         }
         public function getRegionCodeNum() : int|null {
-            return $this->fields['RegionCode_Num'];
+            return (int) $this->fields['RegionCode_Num'];
         }
         public function getName() : string|null {
-            return $this->fields['Name'];
+            return (string) $this->fields['Name'];
         }
         public function getCode() : string|null {
-            return $this->fields['Code'];
+            return (string) $this->fields['Code'];
         }
         
         public function getConstants(){

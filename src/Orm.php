@@ -43,11 +43,12 @@ public function run() {
             \$this->fields['$val[COLUMN_NAME]'] = \$val;
             return \$this;
         }";
-
+        
+        $primaryType = explode("|",$type['type'])[0];
         
         $getReturn = str_starts_with($type['type'], '\\') 
             ? "return \$this->fields['$val[COLUMN_NAME]'] == null ? new $type[type] : \$this->fields['$val[COLUMN_NAME]'];"
-            :  "return \$this->fields['$val[COLUMN_NAME]'];";
+            :  "return ($primaryType) \$this->fields['$val[COLUMN_NAME]'];";
          
         $gets[] = "
         public function get$field() : $type[type] {
