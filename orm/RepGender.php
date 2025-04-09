@@ -1,29 +1,25 @@
 <?php
     namespace Orm;
     use Base\Query;
-    class RepRegion {
-        const TABLE_NAME = 'RepRegion';
-        const PRIMARY_KEY = ["id_region"];
+    class RepGender {
+        const TABLE_NAME = 'RepGender';
+        const PRIMARY_KEY = ["id_gender"];
 
         public $fields = [
-            'id_region' => null,
-			'RegionCode_Num' => null,
-			'Name' => null,
-			'Code' => null
+            'id_gender' => null,
+			'gender' => null
         ];
         
         private $dataType = [
-            'id_region' => 'int',
-			'RegionCode_Num' => 'int|null',
-			'Name' => 'string|null',
-			'Code' => 'string|null'
+            'id_gender' => 'int',
+			'gender' => 'string|null'
         ];
         
-        public function __construct($id_region = false) {
-            if(!$id_region) {
+        public function __construct($id_gender = false) {
+            if(!$id_gender) {
                 return;
             }
-            $qBase = $this->queryBase(['id_region' => $id_region]);
+            $qBase = $this->queryBase(['id_gender' => $id_gender]);
             foreach($qBase as $key => $value) {
                 $dataType = $this->dataType[$key];
                 $key = ucfirst(implode('',array_map(function($v){ return ucfirst($v); }, explode('_', $key))));
@@ -44,34 +40,20 @@
             return $res[0];
         }
         
-        public function setIdRegion(int $val){
-            $this->fields['id_region'] = $val;
+        public function setIdGender(int $val){
+            $this->fields['id_gender'] = $val;
             return $this;
         }
-        public function setRegionCodeNum(int|null $val){
-            $this->fields['RegionCode_Num'] = $val;
-            return $this;
-        }
-        public function setName(string|null $val){
-            $this->fields['Name'] = $val;
-            return $this;
-        }
-        public function setCode(string|null $val){
-            $this->fields['Code'] = $val;
+        public function setGender(string|null $val){
+            $this->fields['gender'] = $val;
             return $this;
         }
         
-        public function getIdRegion() : int {
-            return $this->fields['id_region'];
+        public function getIdGender() : int {
+            return $this->fields['id_gender'];
         }
-        public function getRegionCodeNum() : int|null {
-            return $this->fields['RegionCode_Num'];
-        }
-        public function getName() : string|null {
-            return $this->fields['Name'];
-        }
-        public function getCode() : string|null {
-            return $this->fields['Code'];
+        public function getGender() : string|null {
+            return $this->fields['gender'];
         }
         
         public function getConstants(){
@@ -83,7 +65,7 @@
         public function fullQuery(){
             $query = new Query;
             $query->select(array_keys($this->fields))
-            ->from('RepRegion')
+            ->from('RepGender')
             ->limit(10);
             return $query->genQuery();
         }

@@ -11,8 +11,14 @@ class Query {
     public function __construct( ) {
         $config = $GLOBALS['config'];
         $mysql = $config['database']['mysql'];
-        $this->conn = new PDO("mysql:host=$mysql[host];dbname=$mysql[dbname]", $mysql['user'], $mysql['password']);
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        try {
+            $this->conn = new PDO("mysql:host=$mysql[host];dbname=$mysql[dbname]", $mysql['user'], $mysql['password']) or die("Problema di connessione al DB");
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (\Exception $e) {
+            echo "Errore nella connessione con il DB, controlla la configurazione <br /> " . $e->getMessage();
+        }
+        
+        
     }
     public function query($query) {
         $stmt = $this->conn->prepare($query);

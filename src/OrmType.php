@@ -3,7 +3,7 @@
 namespace Base;
 
 class OrmType {
-    public function dataType($type) {
+    public function dataType($type, $isNullable) {
         $ret = [];
         switch ($type) {
             case 'tinyint':
@@ -79,6 +79,7 @@ class OrmType {
                 echo $type . " da gestire";
                 break;
         }
+        $ret['type'] = $isNullable == 'YES' ? $ret['type'] . "|null" : $ret['type'];
         return $ret;
     }
 }

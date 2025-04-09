@@ -5,7 +5,7 @@ return [
             'dbname' => 'test',
             'host' => 'localhost',
             'user' => 'root',
-            'password'=> null,
+            'password'=> "G48sOf8HgGn7s3",
         ]
     ],
     'output_path' => __DIR__ . '/orm/',

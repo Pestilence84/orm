@@ -2,6 +2,7 @@
     namespace Orm;
     use Base\Query;
 	use Orm\RepCity;
+	use Orm\RepGender;
     class CEPersona {
         const TABLE_NAME = 'CE_Persona';
         const PRIMARY_KEY = ["id_persona"];
@@ -12,12 +13,25 @@
 			'cognome' => null,
 			'nascita_date' => null,
 			'id_city_birth_fk' => null,
+			'id_gender_fk' => null,
 			'creation_date' => null,
 			'mod_date' => null,
 			'hidden' => null,
 			'deleted' => null
         ];
         
+        private $dataType = [
+            'id_persona' => 'int',
+			'nome' => 'string|null',
+			'cognome' => 'string|null',
+			'nascita_date' => 'string|null',
+			'id_city_birth_fk' => 'int|null',
+			'id_gender_fk' => 'int|null',
+			'creation_date' => '\DateTime',
+			'mod_date' => '\DateTime',
+			'hidden' => 'int|null',
+			'deleted' => 'int|null'
+        ];
         
         public function __construct($id_persona = false) {
             if(!$id_persona) {
@@ -25,8 +39,13 @@
             }
             $qBase = $this->queryBase(['id_persona' => $id_persona]);
             foreach($qBase as $key => $value) {
+                $dataType = $this->dataType[$key];
                 $key = ucfirst(implode('',array_map(function($v){ return ucfirst($v); }, explode('_', $key))));
-                $this->{'set' . $key}($value);
+                if( str_starts_with($dataType, '\\') ) {
+                    $this->{'set' . $key}( new $dataType($value));
+                } else {
+                    $this->{'set' . $key}($value);
+                }
             }
         }
         public function queryBase(array $id) {
@@ -43,20 +62,24 @@
             $this->fields['id_persona'] = $val;
             return $this;
         }
-        public function setNome(string $val){
+        public function setNome(string|null $val){
             $this->fields['nome'] = $val;
             return $this;
         }
-        public function setCognome(string $val){
+        public function setCognome(string|null $val){
             $this->fields['cognome'] = $val;
             return $this;
         }
-        public function setNascitaDate(string $val){
+        public function setNascitaDate(string|null $val){
             $this->fields['nascita_date'] = $val;
             return $this;
         }
-        public function setIdCityBirthFk(int $val){
+        public function setIdCityBirthFk(int|null $val){
             $this->fields['id_city_birth_fk'] = $val;
+            return $this;
+        }
+        public function setIdGenderFk(int|null $val){
+            $this->fields['id_gender_fk'] = $val;
             return $this;
         }
         public function setCreationDate(\DateTime $val){
@@ -67,11 +90,11 @@
             $this->fields['mod_date'] = $val;
             return $this;
         }
-        public function setHidden(int $val){
+        public function setHidden(int|null $val){
             $this->fields['hidden'] = $val;
             return $this;
         }
-        public function setDeleted(int $val){
+        public function setDeleted(int|null $val){
             $this->fields['deleted'] = $val;
             return $this;
         }
@@ -79,33 +102,39 @@
         public function getIdPersona() : int {
             return $this->fields['id_persona'];
         }
-        public function getNome() : string {
+        public function getNome() : string|null {
             return $this->fields['nome'];
         }
-        public function getCognome() : string {
+        public function getCognome() : string|null {
             return $this->fields['cognome'];
         }
-        public function getNascitaDate() : string {
+        public function getNascitaDate() : string|null {
             return $this->fields['nascita_date'];
         }
-        public function getIdCityBirthFk() : int {
+        public function getIdCityBirthFk() : int|null {
             return $this->fields['id_city_birth_fk'];
         }
+        public function getIdGenderFk() : int|null {
+            return $this->fields['id_gender_fk'];
+        }
         public function getCreationDate() : \DateTime {
-            $date = new \DateTime($this->fields['creation_date']);
-            return $date;
+            return $this->fields['creation_date'] == null ? new \DateTime : $this->fields['creation_date'];
         }
         public function getModDate() : \DateTime {
-            return $this->fields['mod_date'];
+            return $this->fields['mod_date'] == null ? new \DateTime : $this->fields['mod_date'];
         }
-        public function getHidden() : int {
+        public function getHidden() : int|null {
             return $this->fields['hidden'];
         }
-        public function getDeleted() : int {
+        public function getDeleted() : int|null {
             return $this->fields['deleted'];
         }
         public function getCity(){
             $elem = new RepCity($this->fields['id_city_birth_fk']);
+            return $elem;
+        }
+		public function getGender(){
+            $elem = new RepGender($this->fields['id_gender_fk']);
             return $elem;
         }
         public function getConstants(){

@@ -13,6 +13,13 @@
 			'Name' => null
         ];
         
+        private $dataType = [
+            'id_province' => 'int',
+			'ProvinceCode_Num' => 'int|null',
+			'RegionCode_Num' => 'int|null',
+			'VehicleCityCode' => 'string|null',
+			'Name' => 'string'
+        ];
         
         public function __construct($id_province = false) {
             if(!$id_province) {
@@ -20,8 +27,13 @@
             }
             $qBase = $this->queryBase(['id_province' => $id_province]);
             foreach($qBase as $key => $value) {
+                $dataType = $this->dataType[$key];
                 $key = ucfirst(implode('',array_map(function($v){ return ucfirst($v); }, explode('_', $key))));
-                $this->{'set' . $key}($value);
+                if( str_starts_with($dataType, '\\') ) {
+                    $this->{'set' . $key}( new $dataType($value));
+                } else {
+                    $this->{'set' . $key}($value);
+                }
             }
         }
         public function queryBase(array $id) {
@@ -38,15 +50,15 @@
             $this->fields['id_province'] = $val;
             return $this;
         }
-        public function setProvinceCodeNum(int $val){
+        public function setProvinceCodeNum(int|null $val){
             $this->fields['ProvinceCode_Num'] = $val;
             return $this;
         }
-        public function setRegionCodeNum(int $val){
+        public function setRegionCodeNum(int|null $val){
             $this->fields['RegionCode_Num'] = $val;
             return $this;
         }
-        public function setVehicleCityCode(string $val){
+        public function setVehicleCityCode(string|null $val){
             $this->fields['VehicleCityCode'] = $val;
             return $this;
         }
@@ -58,13 +70,13 @@
         public function getIdProvince() : int {
             return $this->fields['id_province'];
         }
-        public function getProvinceCodeNum() : int {
+        public function getProvinceCodeNum() : int|null {
             return $this->fields['ProvinceCode_Num'];
         }
-        public function getRegionCodeNum() : int {
+        public function getRegionCodeNum() : int|null {
             return $this->fields['RegionCode_Num'];
         }
-        public function getVehicleCityCode() : string {
+        public function getVehicleCityCode() : string|null {
             return $this->fields['VehicleCityCode'];
         }
         public function getName() : string {

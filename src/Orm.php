@@ -29,12 +29,13 @@ public function run() {
         $primary = [];
         $use = ['Base\Query'];
         $getRel = [];
+        $types = [];
         $baseName = str_ireplace("_", "", $row["TABLE_NAME"]);
         $fields = $query->query("SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '$tableSchema' AND TABLE_NAME='$row[TABLE_NAME]' ORDER BY ORDINAL_POSITION");
         foreach ($fields as $val) {
         $oriField = str_ireplace("_", "", $val["COLUMN_NAME"]);
         $field = ucfirst(implode("",array_map(function($v){ return ucfirst($v); }, explode("_", $val["COLUMN_NAME"]))));
-        $type = $dataType->dataType($val['DATA_TYPE']);
+        $type = $dataType->dataType($val['DATA_TYPE'], $val['IS_NULLABLE']);
         $primary = array_column( array_filter( $fields, function ($field) {  return $field['COLUMN_KEY'] == "PRI"; } ), 'COLUMN_NAME');
 
         $sets[] = "
@@ -42,11 +43,20 @@ public function run() {
             \$this->fields['$val[COLUMN_NAME]'] = \$val;
             return \$this;
         }";
+
+        
+        $getReturn = str_starts_with($type['type'], '\\') 
+            ? "return \$this->fields['$val[COLUMN_NAME]'] == null ? new $type[type] : \$this->fields['$val[COLUMN_NAME]'];"
+            :  "return \$this->fields['$val[COLUMN_NAME]'];";
+         
         $gets[] = "
         public function get$field() : $type[type] {
-            return \$this->fields['$val[COLUMN_NAME]'];
+            " .
+            $getReturn
+            ."
         }";
         $privates[] = "'$val[COLUMN_NAME]' => null";
+        $types[] = "'$val[COLUMN_NAME]' => '$type[type]'";
 
         if(preg_match("[fk$]", strtolower($val['COLUMN_NAME']))){
             $tableFk = ucfirst(explode("_", $val['COLUMN_NAME'])[1]);
@@ -64,6 +74,7 @@ public function run() {
     $sets = implode("", $sets);
     $gets = implode("", $gets);
     $privates = implode(",\n\t\t\t", $privates);
+    $types = implode(",\n\t\t\t", $types);
     
     $listQBase = $this->arrayForQuery($primary);
 
@@ -75,8 +86,13 @@ public function run() {
             }
             \$qBase = \$this->queryBase($listQBase);
             foreach(\$qBase as \$key => \$value) {
+                \$dataType = \$this->dataType[\$key];
                 \$key = ucfirst(implode('',array_map(function(\$v){ return ucfirst(\$v); }, explode('_', \$key))));
-                \$this->{'set' . \$key}(\$value);
+                if( str_starts_with(\$dataType, '\\\\') ) {
+                    \$this->{'set' . \$key}( new \$dataType(\$value));
+                } else {
+                    \$this->{'set' . \$key}(\$value);
+                }
             }
         }";
     $primary = json_encode($primary);
@@ -93,6 +109,9 @@ public function run() {
             $privates
         ];
         
+        private \$dataType = [
+            $types
+        ];
         $construct
         public function queryBase(array \$id) {
             \$query = new Query();
