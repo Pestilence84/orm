@@ -16,13 +16,14 @@ public function run() {
     $config = $GLOBALS['config'];
     $mysql = $config['database']['mysql'];
     $tableSchema = $mysql['dbname'];
-    
+    $table = "";
     $nameSpace = $config['namespace'];
     $query = new Query();
-    $res = $query->query("SELECT DISTINCT TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'test' ORDER BY TABLE_NAME");
+    $res = $query->query("SELECT DISTINCT TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '$tableSchema' ORDER BY TABLE_NAME");
     $path = $config['output_path']; 
     $dataType = new OrmType();
     foreach ($res as $row) {
+        $usedUse = [];
         $sets = [];
         $gets = [];
         $privates = [];
@@ -38,16 +39,12 @@ public function run() {
         $type = $dataType->dataType($val['DATA_TYPE'], $val['IS_NULLABLE']);
         $primary = array_column( array_filter( $fields, function ($field) {  return $field['COLUMN_KEY'] == "PRI"; } ), 'COLUMN_NAME');
 
-        $sets[] = "
-        public function set$field($type[type] \$val){
-            \$this->fields['$val[COLUMN_NAME]'] = \$val;
-            return \$this;
-        }";
+        
         
         $primaryType = explode("|",$type['type'])[0];
         
         $getReturn = str_starts_with($type['type'], '\\') 
-            ? "return \$this->fields['$val[COLUMN_NAME]'] == null ? new $type[type] : \$this->fields['$val[COLUMN_NAME]'];"
+            ? "return \$this->fields['$val[COLUMN_NAME]'] == null ? new $type[new] : \$this->fields['$val[COLUMN_NAME]'];"
             :  "return ($primaryType) \$this->fields['$val[COLUMN_NAME]'];";
          
         $gets[] = "
@@ -59,17 +56,37 @@ public function run() {
         $privates[] = "'$val[COLUMN_NAME]' => null";
         $types[] = "'$val[COLUMN_NAME]' => '$type[type]'";
 
-        if(preg_match("[fk$]", strtolower($val['COLUMN_NAME']))){
-            $tableFk = ucfirst(explode("_", $val['COLUMN_NAME'])[1]);
+        if(preg_match("[fk$]", strtolower($val['COLUMN_NAME'])) && substr(strtolower($val['COLUMN_NAME']), 0, 2) == 'id' ){
+            $expTable = explode("_", $val['COLUMN_NAME']);
+            //DA VEDERE PER I MUL 
+            $tableFk = strtolower($expTable[1]) != 'mul' ? ucfirst($expTable[1]) : ucfirst($expTable[2]);
             $query = new Query;
             $res = $query->queryOne( "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$tableSchema' AND ( TABLE_NAME LIKE '%Rep$tableFk%' OR TABLE_NAME LIKE '%Cfg$tableFk%' ) ");
             if($res !== false) {
-                $use[] = str_ireplace("_", "", $res["TABLE_NAME"]);
+                if(!in_array($tableFk, $usedUse)){
+                    $usedUse[] = $tableFk;
+                    $use[] = str_ireplace("_", "", $res["TABLE_NAME"]);
+                }
+                array_pop($expTable);
+                unset($expTable[0]);
+                $tableFk = ucfirst(implode("", array_map('ucfirst', $expTable)));
                 $getRel[] = "public function get$tableFk(){
             \$elem = new $res[TABLE_NAME](\$this->fields['$val[COLUMN_NAME]']);
             return \$elem;
         }";
             }
+            $sets[] = "
+        public function set$field($type[type] \$val){
+            \$this->fields['$val[COLUMN_NAME]'] = \$val;
+            \$this->fields['$tableFk'] = \$this->get$tableFk();
+            return \$this;
+        }";
+        } else {
+            $sets[] = "
+        public function set$field($type[type] \$val){
+            \$this->fields['$val[COLUMN_NAME]'] = \$val;
+            return \$this;
+        }";
         }
     }
     $sets = implode("", $sets);
@@ -90,6 +107,7 @@ public function run() {
                 \$dataType = \$this->dataType[\$key];
                 \$key = ucfirst(implode('',array_map(function(\$v){ return ucfirst(\$v); }, explode('_', \$key))));
                 if( str_starts_with(\$dataType, '\\\\') ) {
+                    \$dataType = (explode('|', \$dataType))[0];
                     \$this->{'set' . \$key}( new \$dataType(\$value));
                 } else {
                     \$this->{'set' . \$key}(\$value);
@@ -100,9 +118,9 @@ public function run() {
     $use = "use " . implode(";\n\tuse $nameSpace\\", $use) . ";";
     $getRel = implode("\n\t\t", $getRel);
     $testo = "<?php
-    namespace $nameSpace;
+    namespace Orm\\Models;
     $use
-    class $baseName {
+    class Base$baseName {
         const TABLE_NAME = '$row[TABLE_NAME]';
         const PRIMARY_KEY = $primary;
 
@@ -141,10 +159,26 @@ public function run() {
         }
     }
 ";
-$fullFileName = $path . $baseName . ".php";
 
-file_put_contents($fullFileName, $testo);
+if(!file_exists($path . "Models/")) {
+    mkdir($path . "Models");
+    chmod($path . "Models", 0775);
+}
+$basePath = $path . "Models/";
+$model = $basePath . "Base" . $baseName . ".php";
+file_put_contents($model , $testo);
+chmod($model, 0664);
+$users = "<?php 
+    namespace $nameSpace;
+    use $nameSpace\\Models\\Base$baseName;
+    class $baseName extends Base$baseName {
+    }
+?>";
+$fullFileName = $path . $baseName . ".php";
+//if(!file_exists($fullFileName)){
+file_put_contents($fullFileName, $users);
 chmod($fullFileName, 0664);
+//}
 
 }
 }

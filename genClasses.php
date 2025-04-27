@@ -6,7 +6,7 @@ $folder = strtolower($tableSchema);
 $nameSpace = ucfirst(strtolower($tableSchema));
 use Base\Query;
 $query = new Query();
-$res = $query->query("SELECT DISTINCT TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'test' ORDER BY TABLE_NAME");
+$res = $query->query("SELECT DISTINCT TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '$tableSchema' ORDER BY TABLE_NAME");
 
 $path = __DIR__ . "/$folder/";
 

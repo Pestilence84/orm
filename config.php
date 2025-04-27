@@ -2,7 +2,7 @@
 return [
     'database' => [
         'mysql' => [
-            'dbname' => 'test',
+            'dbname' => 'buca',
             'host' => 'localhost',
             'user' => 'root',
             'password'=> "G48sOf8HgGn7s3",

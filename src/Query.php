@@ -20,15 +20,39 @@ class Query {
         
         
     }
-    public function query($query) {
+    public function query($query, $params = []) {
         $stmt = $this->conn->prepare($query);
-        $stmt->execute();
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function queryOne($query): array|bool  {
-        $res = $this->query($query);
+    public function queryOne($query, $params = []): array|bool  {
+        $res = $this->query($query, $params);
+
         return $res == null ? false : $res[0];
+    }
+
+    public function queryAll($query): array|bool  {
+        $res = $this->query($query);
+        return $res == null ? false : $res;
+    }
+
+    public function update($table, $fields, $conditions) {
+        $ret[] = "UPDATE $table SET ";
+        $ret[] = $this->genFields($fields);
+        $ret[] = $this->genWhere($conditions);
+        return implode(" ", $ret);
+    }
+
+    private function genFields($fields) {
+        $newFields = [];
+        if (is_array($fields)) {
+            foreach ($fields as $key => $value) {
+                $value = is_object($value) ? 1 : 0; //$value->__toString() : $value;
+                $newFields[] = "$key = $value"; 
+            }
+            return implode(", ", $newFields);
+        }
     }
 
     public function genQuery() {

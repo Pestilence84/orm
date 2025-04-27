@@ -62,6 +62,7 @@ class OrmType {
                 break;
             case 'datetime':
                 $ret['type'] = '\DateTime';
+                $ret['new'] = '\DateTime()';
                 break;
             case 'timestamp':
                 break;
